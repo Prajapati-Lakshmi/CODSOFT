@@ -1,0 +1,119 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+struct Todo {
+    string taskName;
+    bool isDone;
+};
+
+// Add new task
+void createTask(vector<Todo>& list) {
+    Todo t;
+
+    cout << "Write your task: ";
+    cin.ignore();
+    getline(cin, t.taskName);
+
+    t.isDone = false;
+    list.push_back(t);
+
+    cout << "Task saved successfully!\n";
+}
+
+// Show all tasks
+void showTasks(const vector<Todo>& list) {
+    if (list.size() == 0) {
+        cout << "No tasks available right now.\n";
+        return;
+    }
+
+    cout << "\n--- YOUR TASK LIST ---\n";
+
+    for (int i = 0; i < list.size(); i++) {
+        cout << i + 1 << ". "
+             << (list[i].isDone ? "[Done] " : "[Not Done] ")
+             << list[i].taskName << endl;
+    }
+}
+
+// Mark task complete
+void completeTask(vector<Todo>& list) {
+    if (list.empty()) {
+        cout << "Nothing to complete.\n";
+        return;
+    }
+
+    showTasks(list);
+
+    int id;
+    cout << "Enter task number to mark complete: ";
+    cin >> id;
+
+    if (id >= 1 && id <= list.size()) {
+        list[id - 1].isDone = true;
+        cout << "Marked as completed.\n";
+    } else {
+        cout << "Wrong task number.\n";
+    }
+}
+
+// Delete task
+void deleteTask(vector<Todo>& list) {
+    if (list.empty()) {
+        cout << "No tasks to delete.\n";
+        return;
+    }
+
+    showTasks(list);
+
+    int id;
+    cout << "Enter task number to remove: ";
+    cin >> id;
+
+    if (id >= 1 && id <= list.size()) {
+        list.erase(list.begin() + id - 1);
+        cout << "Task removed.\n";
+    } else {
+        cout << "Invalid selection.\n";
+    }
+}
+
+int main() {
+    vector<Todo> list;
+    int option;
+
+    while (true) {
+        cout << "\n===== TO-DO MENU =====\n";
+        cout << "1. Add Task\n";
+        cout << "2. Show Tasks\n";
+        cout << "3. Complete Task\n";
+        cout << "4. Delete Task\n";
+        cout << "5. Exit\n";
+        cout << "Choose option: ";
+
+        cin >> option;
+
+        switch (option) {
+            case 1:
+                createTask(list);
+                break;
+            case 2:
+                showTasks(list);
+                break;
+            case 3:
+                completeTask(list);
+                break;
+            case 4:
+                deleteTask(list);
+                break;
+            case 5:
+                cout << "Program ended.\n";
+                return 0;
+            default:
+                cout << "Invalid option.\n";
+        }
+    }
+}
